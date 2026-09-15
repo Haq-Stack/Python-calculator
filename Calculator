@@ -1,0 +1,107 @@
+
+
+
+def add(first_number, second_number):
+    """Return the sum of two numbers."""
+    return first_number + second_number
+
+
+def subtract(first_number, second_number):
+    """Return the difference between two numbers."""
+    return first_number - second_number
+
+
+def multiply(first_number, second_number):
+    """Return the product of two numbers."""
+    return first_number * second_number
+
+
+def divide(first_number, second_number):
+    """Return the quotient of two numbers."""
+    if second_number == 0:
+        raise ValueError("You cannot divide by zero.")
+    return first_number / second_number
+
+
+OPERATIONS = {
+    "1": ("+", add),
+    "2": ("-", subtract),
+    "3": ("*", multiply),
+    "4": ("/", divide),
+}
+
+
+def get_number(prompt):
+    """Keep asking until the user enters a valid number."""
+    while True:
+        try:
+            return float(input(prompt))
+        except ValueError:
+            print("Please enter a valid number.")
+
+
+def format_number(number):
+    """Display whole numbers without an unnecessary decimal."""
+    if number.is_integer():
+        return str(int(number))
+    return str(round(number, 10))
+
+
+def show_menu():
+    """Display the available calculator operations."""
+    print("\nChoose an operation:")
+    print("1. Add")
+    print("2. Subtract")
+    print("3. Multiply")
+    print("4. Divide")
+    print("5. Show history")
+    print("6. Exit")
+
+
+def main():
+    """Run the calculator until the user chooses to exit."""
+    history = []
+
+    print("Welcome to Abdulqadir's Python Calculator!")
+
+    while True:
+        show_menu()
+        choice = input("Enter your choice (1-6): ").strip()
+
+        if choice == "6":
+            print("Thanks for using the calculator!")
+            break
+
+        if choice == "5":
+            if history:
+                print("\nCalculation history:")
+                for calculation in history:
+                    print(f"- {calculation}")
+            else:
+                print("No calculations have been completed yet.")
+            continue
+
+        if choice not in OPERATIONS:
+            print("Please choose a number from 1 through 6.")
+            continue
+
+        first_number = get_number("Enter the first number: ")
+        second_number = get_number("Enter the second number: ")
+        symbol, operation = OPERATIONS[choice]
+
+        try:
+            result = operation(first_number, second_number)
+        except ValueError as error:
+            print(error)
+            continue
+
+        calculation = (
+            f"{format_number(first_number)} {symbol} "
+            f"{format_number(second_number)} = {format_number(result)}"
+        )
+        history.append(calculation)
+        print(f"Result: {calculation}")
+
+
+if __name__ == "__main__":
+    main()
